@@ -1,6 +1,7 @@
 
-//Duke's Vault v0.5
+//Duke's Vault v0.6
 
+import java.io.File;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -77,7 +78,7 @@ public class Crypt extends JFrame {
 
 		// FUNCTIONAL START
 		Scanner stan = new Scanner(System.in);
-		System.out.println("Duke's Vault: v0.5");
+		System.out.println("Duke's Vault: v0.6");
 		System.out.println("E - Encrypt    D - Decrypt");
 
 		// Action Listener
@@ -100,7 +101,7 @@ public class Crypt extends JFrame {
 
 		wait = true;
 
-		if (mode.equals("e")) {
+		if (mode.equals("e") || mode.equals("E")) {
 
 			// Prompt for Filepath
 			System.out.println("File:");
@@ -119,18 +120,26 @@ public class Crypt extends JFrame {
 					System.out.println("Sleep interrupted!");
 				}
 			}
-		}
+		
 
 		wait = true;
 
 		try {
 			in = new FileInputStream(f);
 			out = new FileOutputStream("Encrypted.vault");
+			
+			File file = new File(f);
+			long Bytes = file.length();
+			long time = Bytes / 36000;
+			
+			System.out.println("Estimated time: " + time + " minutes");
+			
+			System.out.println("Encrypting...");
 
 			int q;
 
 			while ((q = in.read()) != -1) {
-				out.write(q - 1);
+				out.write(q + 5000);
 			}
 		} finally {
 			if (in != null) {
@@ -149,8 +158,8 @@ public class Crypt extends JFrame {
 				System.exit(0);
 			}
 		}
-
-		if (mode.equals("d")) {
+		}
+		if (mode.equals("d") || mode.equals("D")) {
 
 			// Prompt for Filepath
 			System.out.println("File:");
@@ -173,11 +182,19 @@ public class Crypt extends JFrame {
 			try {
 				in = new FileInputStream(f);
 				out = new FileOutputStream("Decrypted.txt");
+				
+				File file = new File(f);
+				long Bytes = file.length();
+				long time = (Bytes / 36000);
+				
+				System.out.println("Estimated time: " + time + " minutes");
+				
+				System.out.println("Decrypting...");
 
 				int q;
 
 				while ((q = in.read()) != -1) {
-					out.write(q + 1);
+					out.write(q - 5000);
 				}
 
 			} finally {
@@ -201,7 +218,7 @@ public class Crypt extends JFrame {
 		
 		else {
 
-		System.err.println("Are you stupid?");
+		System.err.println("Input Invalid");
 		System.err.println("Terminating Duke's Vault: Operator retarded");
 		try {
 			Thread.sleep(3000);
